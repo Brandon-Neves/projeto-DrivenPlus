@@ -6,6 +6,9 @@ import StyledButton from '../components/StyledButton'
 import StyledInput from '../components/StyledInput'
 import { VISIVEL, ESCONDIDO, STATUS } from '../components/display'
 import AuthContext from '../contexts/AuthContext'
+import UserContext from '../contexts/UserContext'
+import voltar from '../assets/voltar.png'
+import cancelar from '../assets/cancelar.png'
 
 export default function PlanId() {
   const id = useParams('')
@@ -16,8 +19,16 @@ export default function PlanId() {
   const [expirationDate, setExpirationDate] = useState('')
   const [status, setStatus] = useState(false)
   const navigate = useNavigate()
-  const [userData, setUserData] = useState([])
   const { token } = useContext(AuthContext)
+  const { user } = useContext(UserContext)
+
+  useEffect(() => {
+    sendSubscription()
+  }, [])
+
+  function returnSubscriptions() {
+    navigate('/subscriptions')
+  }
 
   function confirmSubscription(e) {
     e.preventDefault()
@@ -36,7 +47,6 @@ export default function PlanId() {
       securityNumber: securityCode,
       expirationDate
     }
-
     const config = {
       headers: {
         Authorization: `Bearer ${token}`
@@ -48,13 +58,8 @@ export default function PlanId() {
       config
     )
     promise.then(res => {
-      setUserData(res.data)
+      user.membership = res.data.membership
       navigate('/home')
-    })
-    promise.catch(err => {
-      return alert(
-        'Não foi possível concluir a sua solicitação, tente novamente.'
-      )
     })
   }
 
@@ -71,7 +76,7 @@ export default function PlanId() {
     promise.then(res => {
       setPlanPage(res.data)
     })
-    promise.catch(err => {
+    promise.catch(error => {
       return alert(
         'Não foi possível concluir sua solicitação, tente novamente mais tarde'
       )
@@ -80,6 +85,15 @@ export default function PlanId() {
 
   return (
     <Container>
+      <ContainerImg>
+        <Voltar onClick={returnSubscriptions}>
+          <img src={voltar} alt="" />
+        </Voltar>
+        <CancelSubscription status={status} onClick={unsubscribe}>
+          <img src={cancelar} alt="" />
+        </CancelSubscription>
+      </ContainerImg>
+
       <Header>
         <img src={planPage.image} alt="" />
         <h1>{planPage.name}</h1>
@@ -133,16 +147,69 @@ export default function PlanId() {
         </form>
       </ContainerMain>
       <BackgroundModal status={status}></BackgroundModal>
-      <Modal status={status}>
-        Tem certeza que deseja assinar o plano Driven Plus R$39,90
-        <Div>
-          <button onClick={unsubscribe}>Não</button>
-          <button onClick={sendSubscription}>Sim</button>
-        </Div>
-      </Modal>
+      <ContainerModal status={status}>
+        <Modal>
+          Tem certeza que deseja assinar o plano {planPage.name} R$
+          {planPage.price}
+          <Div>
+            <button onClick={unsubscribe}>Não</button>
+            <button onClick={sendSubscription}>Sim</button>
+          </Div>
+        </Modal>
+      </ContainerModal>
     </Container>
   )
 }
+
+const Container = styled.div`
+  color: #fff;
+  margin: 0 auto;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  h2 {
+    margin-top: 15px;
+  }
+  p {
+    margin-bottom: 2px;
+  }
+`
+const ContainerImg = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const Voltar = styled.div`
+  margin-top: 20px;
+`
+const CancelSubscription = styled.div`
+  margin-top: 20px;
+  z-index: 2;
+  display: ${props => (props.status ? VISIVEL : ESCONDIDO)};
+`
+
+const Header = styled.div`
+  margin: 0 auto;
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  img {
+    width: 175px;
+    margin: 70px auto 15px auto;
+  }
+`
+const ContainerMain = styled.div`
+  margin-left: 15px;
+  input {
+    width: 95%;
+  }
+  form {
+    margin-top: 34px;
+  }
+`
 
 const Div = styled.div`
   display: flex;
@@ -183,9 +250,11 @@ const BackgroundModal = styled.div`
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
 `
+const ContainerModal = styled.div`
+  display: ${props => (props.status ? VISIVEL : ESCONDIDO)};
+`
 
 const Modal = styled.div`
-  display: ${props => (props.status ? VISIVEL : ESCONDIDO)};
   flex-direction: column;
   width: 250px;
   height: 180px;
@@ -201,48 +270,11 @@ const Modal = styled.div`
   color: #000;
 `
 
-const Header = styled.div`
-  margin: 0 auto;
-  h1 {
-    font-size: 32px;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  img {
-    width: 175px;
-    margin: 85px auto 15px auto;
-  }
-`
-
-const ContainerMain = styled.div`
-  margin-left: 15px;
-  input {
-    width: 95%;
-  }
-  form {
-    margin-top: 34px;
-  }
-`
 const ContainerInput = styled.div`
   display: flex;
   gap: 0 5px;
   input {
     width: 47%;
-  }
-`
-
-const Container = styled.div`
-  color: #fff;
-  margin: 0 auto;
-  max-width: 350px;
-  display: flex;
-  flex-direction: column;
-  h2 {
-    margin-top: 15px;
-  }
-  p {
-    margin-bottom: 2px;
   }
 `
 

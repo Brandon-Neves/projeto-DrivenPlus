@@ -1,9 +1,10 @@
-import { useContext, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import UserContext from '../contexts/UserContext'
 import styled from 'styled-components'
 import AuthContext from '../contexts/AuthContext'
 import axios from 'axios'
+import avatar from '../assets/avatar.png'
 
 export default function UserArea() {
   const { user } = useContext(UserContext)
@@ -38,7 +39,9 @@ export default function UserArea() {
     <Container>
       <Header>
         <img src={user.membership.image} alt="" />
-        <img src="" alt="Icone" />
+        <Avatar>
+          <img src={avatar} alt="" />
+        </Avatar>
       </Header>
       <h1>Olá, {user.name}</h1>
       {user.membership.perks !== undefined
@@ -57,17 +60,63 @@ export default function UserArea() {
     </Container>
   )
 }
+const Container = styled.div`
+  color: #fff;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  h1 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 40px 0 50px 0;
+  }
+`
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 34px;
+  img {
+    width: 20%;
+  }
+`
+const Avatar = styled.div`
+  img {
+    width: 100%;
+  }
+`
+
+const ContainerLinks = styled.div`
+  display: flex;
+  justify-content: center;
+`
+const StyledLink = styled.a`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  height: 52px;
+  font-weight: 700px;
+  color: #fff;
+  background-color: #ff4791;
+`
 
 const ContainerButton = styled.div`
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 400px;
   button {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 14px;
-    width: 85%;
+    width: 100%;
     margin: 0 auto 8px auto;
     border-radius: 8px;
     height: 52px;
@@ -79,43 +128,7 @@ const ContainerButton = styled.div`
     }
     :last-child {
       background-color: #ff4747;
+      margin-bottom: 25px;
     }
   }
-`
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 34px;
-  img {
-    width: 20%;
-    margin-left: 9%;
-  }
-`
-
-const Container = styled.div`
-  color: #fff;
-  h1 {
-    text-align: center;
-    font-size: 24px;
-    font-weight: 700;
-    margin: 30px 0 50px 0;
-  }
-`
-const ContainerLinks = styled.div`
-  display: flex;
-  justify-content: center;
-`
-const StyledLink = styled.a`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  width: 85%;
-  margin-bottom: 8px;
-  border-radius: 8px;
-  height: 52px;
-  font-weight: 700px;
-  color: #fff;
-  background-color: #ff4791;
 `
