@@ -38,7 +38,9 @@ export default function UserArea() {
   return (
     <Container>
       <Header>
-        <img src={user.membership.image} alt="" />
+        <Logo>
+          <img src={user.membership.image} alt="" />
+        </Logo>
         <Avatar>
           <img src={avatar} alt="" />
         </Avatar>
@@ -79,8 +81,12 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 34px;
+  width: 95%;
+`
+const Logo = styled.div`
+  margin-left: 10px;
   img {
-    width: 20%;
+    width: 60%;
   }
 `
 const Avatar = styled.div`
@@ -98,7 +104,7 @@ const StyledLink = styled.a`
   justify-content: center;
   align-items: center;
   font-size: 14px;
-  width: 100%;
+  width: 95%;
   margin-bottom: 8px;
   border-radius: 8px;
   height: 52px;
@@ -116,7 +122,7 @@ const ContainerButton = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 14px;
-    width: 100%;
+    width: 95%;
     margin: 0 auto 8px auto;
     border-radius: 8px;
     height: 52px;

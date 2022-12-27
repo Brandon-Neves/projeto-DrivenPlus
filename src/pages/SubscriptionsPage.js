@@ -37,17 +37,19 @@ export default function Subscriptions() {
 }
 
 const Container = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   h1 {
     color: #fff;
     font-weight: 700;
     font-size: 32px;
-    text-align: center;
     margin: 35px 0;
   }
 `
 
 const PlansPage = styled.div`
-  max-width: 350px;
+  width: 350px;
   display: flex;
   color: #fff;
   flex-direction: column;
