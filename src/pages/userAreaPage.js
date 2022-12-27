@@ -62,7 +62,7 @@ export default function UserArea() {
 }
 const Container = styled.div`
   color: #fff;
-  width: 400px;
+  width: 350px;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -110,7 +110,7 @@ const StyledLink = styled.a`
 const ContainerButton = styled.div`
   position: absolute;
   bottom: 0;
-  width: 400px;
+  width: 350px;
   button {
     display: flex;
     justify-content: center;
